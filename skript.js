@@ -1,54 +1,86 @@
-let kdnscore = 0;
-let clickstr = 1;
-let passivekdn = 0;
-let upgamt = ["NA", 0]
+let kdnScore = 0;
+let clickStrength = 1;
+let passiveKdn = 0;
+let upgradeCount = [0];
 
 const upgrades = [
-    "this text is here to distract you why are u looking at it",
     {
         upgrade: "1A3",
         cost: 20,
-        normalinc: 1,
-        clickinc: 0,
+        normalInc: 1,
+        clickInc: 0,
         limit: 32,
-        flavourText: "You manage to get a whole class pissed off against one guy. Wow... (Upgrade Limit Reached) "
+        flavourText: "You manage to get a whole class pissed off against one guy. Wow... (Upgrade Limit Reached)"
+    },
+    {
+        upgrade: "Neon (cosmetic)",
+        cost: 200,
+        normalInc: 0,
+        clickInc: 0,
+        limit: 0,
+        flavourText: "yay you get nice background",
+        neon: true,
+    },
+    {
+        upgrade: "Claude",
+        cost: 2000,
+        normalInc: 0,
+        clickInc: 10,
+        limit: 100,
+        flavourText: "You ran out of money to buy claude tokens :( (Upgrade Limit Reached)"
     }
-]
-const button = document.getElementById("kdn");
-const clicktrack = document.getElementById("m");
-const auto = document.getElementById("a");
-const score = document.getElementById("scor");
-const button1 = document.getElementById("upg1");
-const ui1 = document.getElementById("uppie1");
+];
 
-button.addEventListener('click', hi);
-button1.addEventListener('click', () => upgrade(1));
+const clickButton = document.getElementById("kdn");
+const clickTrackEl = document.getElementById("m");
+const autoEl = document.getElementById("a");
+const scoreEl = document.getElementById("scor");
+const upgradeButton1 = document.getElementById("upg1");
+const upgradeUi1 = document.getElementById("uppie1");
+const bg = document.getElementById("bg");
 
-function upgrade(type){
-    if (kdnscore >= upgrades[type]["cost"] && upgamt[type]<upgrades[type]["limit"]){ 
-        kdnscore -= upgrades[type]["cost"];
-        passivekdn += upgrades[type]["normalinc"];
-        clickstr += upgrades[type]["clickinc"];
-        upgamt[type] += 1;
-    } else if (upgamt[type]>=upgrades[type]["limit"]) {
-        alert(upgrades[type]["flavourText"]);
-    } else {
+clickButton.addEventListener('click', handleClick);
+upgradeButton1.addEventListener('click', () => purchaseUpgrade(0));
+
+function purchaseUpgrade(index) {
+    const upgrade = upgrades[index];
+    const owned = upgradeCount[index];
+
+    if (owned >= upgrade.limit) {
+        alert(upgrade.flavourText);
+        return;
+    }
+
+    if (kdnScore < upgrade.cost) {
         alert("Not enough Claude Tokens!");
+        return;
     }
-    ui1.innerText = upgamt[1];
 
+    if (upgrades[index].neon === true) {
+        bg.style.background = "linear-gradient(135deg, #b026ff, #ff44cc)";
+        bg.style.boxShadow = "0 0 15px #ff44cc, 0 0 30px #b026ff";
+        bg.style.color = "#ffffff";
+    }
+
+    kdnScore -= upgrade.cost;
+    passiveKdn += upgrade.normalInc;
+    clickStrength += upgrade.clickInc;
+    upgradeCount[index] += 1;
+
+    upgradeUi1.innerText = upgradeCount[index];
+    scoreEl.innerText = kdnScore;
 }
 
-
-function hi(){
-    kdnscore += clickstr;
-    scor.innerText = kdnscore;
-}
-function update(){
-    kdnscore += passivekdn;
-    scor.innerText = kdnscore;
-    auto.innerText = passivekdn;
-    clicktrack.innerText = clickstr;
+function handleClick() {
+    kdnScore += clickStrength;
+    scoreEl.innerText = kdnScore;
 }
 
-setInterval(update, 1000)
+function update() {
+    kdnScore += passiveKdn;
+    scoreEl.innerText = kdnScore;
+    autoEl.innerText = passiveKdn;
+    clickTrackEl.innerText = clickStrength;
+}
+
+setInterval(update, 1000);
