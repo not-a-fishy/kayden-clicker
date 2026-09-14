@@ -33,7 +33,7 @@ function upgrade(type){
     } else if (upgamt[type]>=upgrades[type]["limit"]) {
         alert(upgrades[type]["flavourText"]);
     } else {
-        alert("Not enough Kayden Points!");
+        alert("Not enough Claude Tokens!");
     }
     ui1.innerText = upgamt[1];
 
