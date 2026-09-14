@@ -1,7 +1,7 @@
 let kdnScore = 0;
 let clickStrength = 1;
 let passiveKdn = 0;
-let upgradeCount = [0];
+let upgradeCount = [];
 
 const upgrades = [
     {
@@ -10,16 +10,18 @@ const upgrades = [
         normalInc: 1,
         clickInc: 0,
         limit: 32,
-        flavourText: "You manage to get a whole class pissed off against one guy. Wow... (Upgrade Limit Reached)"
+        flavourText: "You manage to get a whole class pissed off against one guy. Wow... (Upgrade Limit Reached)",
+        label: "hire someone in 1A3 to harass Kayden"
     },
     {
         upgrade: "Neon (cosmetic)",
         cost: 200,
         normalInc: 0,
         clickInc: 0,
-        limit: 0,
+        limit: 1,
         flavourText: "yay you get nice background",
         neon: true,
+        label: "unlock a nice background"
     },
     {
         upgrade: "Claude",
@@ -27,7 +29,8 @@ const upgrades = [
         normalInc: 0,
         clickInc: 10,
         limit: 100,
-        flavourText: "You ran out of money to buy claude tokens :( (Upgrade Limit Reached)"
+        flavourText: "You ran out of money to buy claude tokens :( (Upgrade Limit Reached)",
+        label: "buy some Claude tokens"
     }
 ];
 
@@ -35,12 +38,31 @@ const clickButton = document.getElementById("kdn");
 const clickTrackEl = document.getElementById("m");
 const autoEl = document.getElementById("a");
 const scoreEl = document.getElementById("scor");
-const upgradeButton1 = document.getElementById("upg1");
-const upgradeUi1 = document.getElementById("uppie1");
 const bg = document.getElementById("bg");
+const upgradesContainer = document.getElementById("upgrades-container");
 
 clickButton.addEventListener('click', handleClick);
-upgradeButton1.addEventListener('click', () => purchaseUpgrade(0));
+
+buildUpgradeButtons();
+
+function buildUpgradeButtons() {
+    upgrades.forEach((upgrade, index) => {
+        upgradeCount[index] = 0;
+
+        const button = document.createElement("button");
+        button.id = `upg${index}`;
+        button.className = "uppies";
+        button.innerHTML = `
+            <b>${upgrade.upgrade}.</b>
+            <b class="cost">Costs <b class="actcost">${upgrade.cost}</b> Claude Tokens</b>
+            ${upgrade.label}
+            <b id="uppie${index}" class="amnt">0</b>
+        `;
+
+        button.addEventListener('click', () => purchaseUpgrade(index));
+        upgradesContainer.appendChild(button);
+    });
+}
 
 function purchaseUpgrade(index) {
     const upgrade = upgrades[index];
@@ -56,7 +78,7 @@ function purchaseUpgrade(index) {
         return;
     }
 
-    if (upgrades[index].neon === true) {
+    if (upgrade.neon === true) {
         bg.style.background = "linear-gradient(135deg, #b026ff, #ff44cc)";
         bg.style.boxShadow = "0 0 15px #ff44cc, 0 0 30px #b026ff";
         bg.style.color = "#ffffff";
@@ -67,7 +89,7 @@ function purchaseUpgrade(index) {
     clickStrength += upgrade.clickInc;
     upgradeCount[index] += 1;
 
-    upgradeUi1.innerText = upgradeCount[index];
+    document.getElementById(`uppie${index}`).innerText = upgradeCount[index];
     scoreEl.innerText = kdnScore;
 }
 
