@@ -120,6 +120,40 @@ div:last-of-type h1 {
     box-shadow: 2px 2px 0px black;
 }
 
+.uppiesbuff {
+    background-color: #f20000;
+    color: white;
+    font-size: 18px;
+    padding: 12px 30px;
+    border: 3px solid black;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px black;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.1s ease;
+}
+
+.uppies:hover {
+    background-color: #d05000;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px black;
+}
+
+.uppies:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
+}
+
 .cost {
     font-size: 20px;
+}
+
+.actualcost{
+    font-size: 25px;
+    color: rgba(50,50,50,0)
+}
+
+.amnt{
+    font-size: 40px;
+    color: rgba(0,0,0,0.3)
 }
