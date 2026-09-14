@@ -1,0 +1,125 @@
+body {
+    background-color: #ffaa55;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin: 0;
+    color: #222;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 3px 3px 0px #000;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#score {
+    background-color: orangered;
+    color: white;
+    text-align: center; 
+    padding: 15px 40px;
+    border: 4px solid black;
+    box-shadow: 5px 5px 0px black;
+    border-radius: 12px;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    min-width: 250px;
+}
+
+p {
+    background-color: #ffe0b3;
+    color: #000;
+    text-align: center;
+    padding: 8px 20px;
+    border: 3px solid black;
+    box-shadow: 3px 3px 0px black;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0;
+    min-width: 200px;
+}
+
+#contain {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#kdn {
+    width: 210px;
+    height: 210px;
+    padding: 0;
+    border: 6px solid black;
+    border-radius: 50%; /* Makes the button perfectly round */
+    overflow: hidden;
+    cursor: pointer;
+    background: none;
+    box-shadow: 0px 8px 0px #884400, 0px 15px 20px rgba(0,0,0,0.3);
+    transition: all 0.1s ease;
+}
+
+#kdnimg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#kdn:active {
+    transform: translateY(4px);
+    box-shadow: 0px 4px 0px #884400, 0px 5px 10px rgba(0,0,0,0.3);
+}
+
+hr {
+    width: 100%;
+    max-width: 400px;
+    border: 2px dashed black;
+    margin: 30px 0;
+}
+
+div:last-of-type {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+div:last-of-type h1 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.uppies {
+    background-color: #4cd137;
+    color: white;
+    font-size: 18px;
+    padding: 12px 30px;
+    border: 3px solid black;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px black;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.1s ease;
+}
+
+.uppies:hover {
+    background-color: #44bd32;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px black;
+}
+
+.uppies:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
+}
+
+.cost {
+    font-size: 20px;
+}
