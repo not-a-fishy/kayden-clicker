@@ -12,11 +12,8 @@ function onYouTubeIframeAPIReady() {
             'onReady': () => {
                 console.log("YouTube Player Loaded!");
 
-                if (upgradeCount[7] > 0) {
-                    showVideo();
-                    playYouTubeVideo();
-                } else if (upgradeCount[6] > 0) {
-                    playYouTubeVideo();
+                if (upgradeCount[7] > 0 || upgradeCount[6] > 0) {
+                    autoStartOnReload();
                 }
             },
             'onStateChange': onPlayerStateChange
@@ -30,8 +27,34 @@ function onPlayerStateChange(event) {
     }
 }
 
+function autoStartOnReload() {
+    if (!player || !player.playVideo) return;
+
+    if (upgradeCount[7] > 0) {
+        showVideo();
+    }
+
+    player.playVideo();
+    musicStarted = true;
+
+    setTimeout(() => {
+        if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
+            player.mute();
+            player.playVideo();
+            
+            const unmuteOnInteraction = () => {
+                player.unMute();
+                player.playVideo();
+                document.removeEventListener("click", unmuteOnInteraction);
+            };
+            document.addEventListener("click", unmuteOnInteraction);
+        }
+    }, 500);
+}
+
 function playYouTubeVideo() {
     if (player && player.playVideo) {
+        player.unMute();
         player.playVideo();
         musicStarted = true;
     }
@@ -172,6 +195,7 @@ function makeEmoji() {
 }
 
 function buildUpgradeButtons() {
+    upgradesContainer.innerHTML = "";
     upgrades.forEach((upgrade, index) => {
         upgradeCount[index] = 0;
 
@@ -254,7 +278,7 @@ function applyWatermark() {
 }
 
 function handleClick() {
-    if (upgradeCount[6] > 0) {
+    if (upgradeCount[6] > 0 || upgradeCount[7] > 0) {
         startMusic();
     }
 
