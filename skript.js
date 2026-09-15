@@ -4,6 +4,21 @@ let passiveKdn = 0;
 let upgradeCount = [];
 let musicStarted = false;
 
+let player;
+
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('bavideo', {
+        events: {
+            'onReady': () => console.log("YouTube Player Loaded!")
+        }
+    });
+}
+
+function playYouTubeVideo() {
+    if (player && player.playVideo) {
+        player.playVideo();
+    }
+}
 
 const upgrades = [
     {
@@ -158,6 +173,10 @@ function purchaseUpgrade(index) {
 
     if (upgrade.backgroundmusic === true) {
         startMusic();
+    }
+
+    if (upgrade.playvideo === true) {
+        playYouTubeVideo();
     }
 
     if (upgrade.emoji === true) emoji = true;
