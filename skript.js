@@ -6,6 +6,11 @@ let musicStarted = false;
 
 let player;
 
+function showVideo() {
+    const video = document.getElementById("bavideo");
+    video.style.display = "block";
+}
+
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('bavideo', {
         events: {
@@ -21,7 +26,7 @@ function onYouTubeIframeAPIReady() {
 function playYouTubeVideo() {
     if (player && player.playVideo) {
         player.playVideo();
-        document.getElementById("bavideo").style.display = "block";
+        showVideo();
     }
 }
 
