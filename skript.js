@@ -14,22 +14,39 @@ function onYouTubeIframeAPIReady() {
 
                 if (upgradeCount[7] > 0) {
                     showVideo();
-                    player.playVideo();
+                    playYouTubeVideo();
+                } else if (upgradeCount[6] > 0) {
+                    playYouTubeVideo();
                 }
-            }
+            },
+            'onStateChange': onPlayerStateChange
         }
     });
+}
+
+function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.ENDED) {
+        player.playVideo();
+    }
 }
 
 function playYouTubeVideo() {
     if (player && player.playVideo) {
         player.playVideo();
+        musicStarted = true;
     }
 }
 
 function showVideo() {
     const video = document.getElementById("bavideo");
-    video.style.display = "block";
+    if (video) {
+        video.style.display = "block";
+    }
+}
+
+function startMusic() {
+    if (musicStarted) return;
+    playYouTubeVideo();
 }
 
 const upgrades = [
@@ -118,10 +135,6 @@ const autoEl = document.getElementById("a");
 const scoreEl = document.getElementById("scor");
 const bg = document.getElementById("bg");
 const upgradesContainer = document.getElementById("upgrades-container");
-
-const music = new Audio("bamusic.mp3");
-music.loop = true;
-music.volume = 0.5;
 
 clickButton.addEventListener("click", handleClick);
 
@@ -222,40 +235,21 @@ function purchaseUpgrade(index) {
     clickStrength += upgrade.clickInc;
     upgradeCount[index] += 1;
 
-    document.getElementById(`uppie${index}`).innerText =
-        upgradeCount[index];
-
+    document.getElementById(`uppie${index}`).innerText = upgradeCount[index];
     scoreEl.innerText = kdnScore;
 
     saveGame();
 }
 
-function startMusic() {
-    if (musicStarted) return;
-
-    music.play()
-        .then(() => {
-            musicStarted = true;
-        })
-        .catch(err => {
-            console.log(
-                "Music blocked, will retry on next click:",
-                err
-            );
-        });
-}
-
 function applyNeon() {
-    bg.classList.add("neon-bg");
+    if (bg) bg.classList.add("neon-bg");
 }
 
 function applyWatermark() {
     if (document.getElementById("watermark-overlay")) return;
 
     const overlay = document.createElement("div");
-
     overlay.id = "watermark-overlay";
-
     document.body.appendChild(overlay);
 }
 
@@ -265,9 +259,7 @@ function handleClick() {
     }
 
     kdnScore += clickStrength;
-
     scoreEl.innerText = kdnScore;
-
     saveGame();
 }
 
@@ -289,10 +281,7 @@ function saveGame() {
     };
 
     try {
-        localStorage.setItem(
-            SAVE_KEY,
-            JSON.stringify(saveData)
-        );
+        localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
     } catch (e) {
         console.error("Failed to save game:", e);
     }
@@ -303,9 +292,7 @@ function loadGame() {
 
     try {
         const raw = localStorage.getItem(SAVE_KEY);
-
         if (!raw) return;
-
         saveData = JSON.parse(raw);
     } catch (e) {
         console.error("Failed to load save:", e);
@@ -322,9 +309,7 @@ function loadGame() {
             if (index < upgradeCount.length) {
                 upgradeCount[index] = count;
 
-                const uiEl =
-                    document.getElementById(`uppie${index}`);
-
+                const uiEl = document.getElementById(`uppie${index}`);
                 if (uiEl) {
                     uiEl.innerText = count;
                 }
@@ -334,11 +319,9 @@ function loadGame() {
 
     upgrades.forEach((upgrade, index) => {
         if (upgradeCount[index] > 0) {
-
             if (upgrade.neon) {
                 applyNeon();
             }
-
             if (upgrade.watermark) {
                 applyWatermark();
             }
