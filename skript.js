@@ -46,7 +46,7 @@ const upgrades = [
         normalInc: 0,
         clickInc: 0,
         limit: 1,
-        flavourText: "",
+        flavourText: "u alr got this",
         neon: true,
         label: "unlock a nice background"
     },
@@ -74,7 +74,7 @@ const upgrades = [
         normalInc: 0,
         clickInc: 0,
         limit: 1,
-        flavourText: "",
+        flavourText: "u alr got this",
         label: "emoji spam",
         emoji: true
     },
@@ -84,10 +84,21 @@ const upgrades = [
         normalInc: 0,
         clickInc: 0,
         limit: 1,
-        flavourText: "",
+        flavourText: "u alr got this",
         label: "bg music :) (btw its bad apple music)",
         backgroundmusic: true
     },
+    {
+        upgrade: "Video",
+        cost: 500000,
+        normalInc: 0,
+        clickInc: 0,
+        limit: 1,
+        flavourText: "u alr got this",
+        label: "bad apple video",
+        playvideo: true
+    },
+    
 ];
 
 const clickButton = document.getElementById("kdn");
