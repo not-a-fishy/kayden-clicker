@@ -6,16 +6,14 @@ let musicStarted = false;
 
 let player;
 
-function showVideo() {
-    const video = document.getElementById("bavideo");
-    video.style.display = "block";
-}
-
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('bavideo', {
         events: {
             'onReady': () => {
+                console.log("YouTube Player Loaded!");
+
                 if (upgradeCount[7] > 0) {
+                    showVideo();
                     player.playVideo();
                 }
             }
@@ -26,8 +24,12 @@ function onYouTubeIframeAPIReady() {
 function playYouTubeVideo() {
     if (player && player.playVideo) {
         player.playVideo();
-        showVideo();
     }
+}
+
+function showVideo() {
+    const video = document.getElementById("bavideo");
+    video.style.display = "block";
 }
 
 const upgrades = [
@@ -107,8 +109,7 @@ const upgrades = [
         flavourText: "u alr got this",
         label: "bad apple video",
         playvideo: true
-    },
-    
+    }
 ];
 
 const clickButton = document.getElementById("kdn");
@@ -117,14 +118,19 @@ const autoEl = document.getElementById("a");
 const scoreEl = document.getElementById("scor");
 const bg = document.getElementById("bg");
 const upgradesContainer = document.getElementById("upgrades-container");
+
 const music = new Audio("bamusic.mp3");
 music.loop = true;
 music.volume = 0.5;
 
-clickButton.addEventListener('click', handleClick);
+clickButton.addEventListener("click", handleClick);
 
 let emoji = false;
-const mostUsedEmojis = ["😂", "❤️", "🤣", "👍", "😭", "🙏", "😘", "🥰", "😍", "😊", "🎉", "✨"];
+
+const mostUsedEmojis = [
+    "😂", "❤️", "🤣", "👍", "😭", "🙏",
+    "😘", "🥰", "😍", "😊", "🎉", "✨"
+];
 
 const SAVE_KEY = "kaydenClickerSave";
 
@@ -140,6 +146,7 @@ function makeEmoji() {
     div.className = "falling-emoji";
 
     const fallDuration = randint(3, 6);
+
     div.style.left = `${randint(0, window.innerWidth - 30)}px`;
     div.style.fontSize = `${randint(24, 48)}px`;
     div.style.animationDuration = `${fallDuration}s`;
@@ -156,16 +163,21 @@ function buildUpgradeButtons() {
         upgradeCount[index] = 0;
 
         const button = document.createElement("button");
+
         button.id = `upg${index}`;
         button.className = "uppies";
+
         button.innerHTML = `
             <b>${upgrade.upgrade}.</b>
-            <b class="cost">Costs <b class="actcost">${upgrade.cost}</b> Claude Tokens</b>
+            <b class="cost">
+                Costs <b class="actcost">${upgrade.cost}</b> Claude Tokens
+            </b>
             ${upgrade.label}
             <b id="uppie${index}" class="amnt">0</b>
         `;
 
-        button.addEventListener('click', () => purchaseUpgrade(index));
+        button.addEventListener("click", () => purchaseUpgrade(index));
+
         upgradesContainer.appendChild(button);
     });
 }
@@ -197,17 +209,22 @@ function purchaseUpgrade(index) {
     }
 
     if (upgrade.playvideo === true) {
+        showVideo();
         playYouTubeVideo();
     }
 
-    if (upgrade.emoji === true) emoji = true;
+    if (upgrade.emoji === true) {
+        emoji = true;
+    }
 
     kdnScore -= upgrade.cost;
     passiveKdn += upgrade.normalInc;
     clickStrength += upgrade.clickInc;
     upgradeCount[index] += 1;
 
-    document.getElementById(`uppie${index}`).innerText = upgradeCount[index];
+    document.getElementById(`uppie${index}`).innerText =
+        upgradeCount[index];
+
     scoreEl.innerText = kdnScore;
 
     saveGame();
@@ -215,11 +232,17 @@ function purchaseUpgrade(index) {
 
 function startMusic() {
     if (musicStarted) return;
-    music.play().then(() => {
-        musicStarted = true;
-    }).catch(err => {
-        console.log("Music blocked, will retry on next click:", err);
-    });
+
+    music.play()
+        .then(() => {
+            musicStarted = true;
+        })
+        .catch(err => {
+            console.log(
+                "Music blocked, will retry on next click:",
+                err
+            );
+        });
 }
 
 function applyNeon() {
@@ -230,7 +253,9 @@ function applyWatermark() {
     if (document.getElementById("watermark-overlay")) return;
 
     const overlay = document.createElement("div");
+
     overlay.id = "watermark-overlay";
+
     document.body.appendChild(overlay);
 }
 
@@ -238,13 +263,17 @@ function handleClick() {
     if (upgradeCount[6] > 0) {
         startMusic();
     }
+
     kdnScore += clickStrength;
+
     scoreEl.innerText = kdnScore;
+
     saveGame();
 }
 
 function update() {
     kdnScore += passiveKdn;
+
     scoreEl.innerText = kdnScore;
     autoEl.innerText = passiveKdn;
     clickTrackEl.innerText = clickStrength;
@@ -260,7 +289,10 @@ function saveGame() {
     };
 
     try {
-        localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+        localStorage.setItem(
+            SAVE_KEY,
+            JSON.stringify(saveData)
+        );
     } catch (e) {
         console.error("Failed to save game:", e);
     }
@@ -271,7 +303,9 @@ function loadGame() {
 
     try {
         const raw = localStorage.getItem(SAVE_KEY);
+
         if (!raw) return;
+
         saveData = JSON.parse(raw);
     } catch (e) {
         console.error("Failed to load save:", e);
@@ -287,16 +321,27 @@ function loadGame() {
         saveData.upgradeCount.forEach((count, index) => {
             if (index < upgradeCount.length) {
                 upgradeCount[index] = count;
-                const uiEl = document.getElementById(`uppie${index}`);
-                if (uiEl) uiEl.innerText = count;
+
+                const uiEl =
+                    document.getElementById(`uppie${index}`);
+
+                if (uiEl) {
+                    uiEl.innerText = count;
+                }
             }
         });
     }
 
     upgrades.forEach((upgrade, index) => {
         if (upgradeCount[index] > 0) {
-            if (upgrade.neon) applyNeon();
-            if (upgrade.watermark) applyWatermark();
+
+            if (upgrade.neon) {
+                applyNeon();
+            }
+
+            if (upgrade.watermark) {
+                applyWatermark();
+            }
         }
     });
 
