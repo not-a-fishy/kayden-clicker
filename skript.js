@@ -71,10 +71,10 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-buildUpgradeButtons();
-
 let emoji = false;
 const mostUsedEmojis = ["😂", "❤️", "🤣", "👍", "😭", "🙏", "😘", "🥰", "😍", "😊", "🎉", "✨"];
+
+const SAVE_KEY = "kaydenClickerSave";
 
 function randint(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -83,11 +83,11 @@ function randint(min, max) {
 function makeEmoji() {
     const div = document.createElement("div");
     const randomIndex = Math.floor(Math.random() * mostUsedEmojis.length);
-    
+
     div.textContent = mostUsedEmojis[randomIndex];
-    
-    const fallDuration = randint(3, 6); 
-    
+
+    const fallDuration = randint(3, 6);
+
     div.style = `
         position: fixed;
         left: ${randint(0, window.innerWidth - 30)}px;
@@ -97,9 +97,9 @@ function makeEmoji() {
         z-index: 9999;
         animation: fall ${fallDuration}s linear forwards;
     `;
-    
+
     document.body.appendChild(div);
-    
+
     setTimeout(() => {
         div.remove();
     }, fallDuration * 1000);
@@ -130,7 +130,7 @@ function purchaseUpgrade(index) {
 
     if (owned >= upgrade.limit) {
         alert(upgrade.flavourText);
-        return
+        return;
     }
 
     if (kdnScore < upgrade.cost) {
@@ -139,9 +139,7 @@ function purchaseUpgrade(index) {
     }
 
     if (upgrade.neon === true) {
-        bg.style.background = "linear-gradient(135deg, #b026ff, #ff44cc)";
-        bg.style.boxShadow = "0 0 15px #ff44cc, 0 0 30px #b026ff";
-        bg.style.color = "#ffffff";
+        applyNeon();
     }
 
     if (upgrade.emoji === true) emoji = true;
@@ -153,11 +151,20 @@ function purchaseUpgrade(index) {
 
     document.getElementById(`uppie${index}`).innerText = upgradeCount[index];
     scoreEl.innerText = kdnScore;
+
+    saveGame();
+}
+
+function applyNeon() {
+    bg.style.background = "linear-gradient(135deg, #b026ff, #ff44cc)";
+    bg.style.boxShadow = "0 0 15px #ff44cc, 0 0 30px #b026ff";
+    bg.style.color = "#ffffff";
 }
 
 function handleClick() {
     kdnScore += clickStrength;
     scoreEl.innerText = kdnScore;
+    saveGame();
 }
 
 function update() {
@@ -167,6 +174,61 @@ function update() {
     clickTrackEl.innerText = clickStrength;
 }
 
+function saveGame() {
+    const saveData = {
+        kdnScore,
+        clickStrength,
+        passiveKdn,
+        upgradeCount,
+        emoji
+    };
+
+    try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+    } catch (e) {
+        console.error("Failed to save game:", e);
+    }
+}
+
+function loadGame() {
+    let saveData;
+
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (!raw) return;
+        saveData = JSON.parse(raw);
+    } catch (e) {
+        console.error("Failed to load save:", e);
+        return;
+    }
+
+    kdnScore = saveData.kdnScore ?? 0;
+    clickStrength = saveData.clickStrength ?? 1;
+    passiveKdn = saveData.passiveKdn ?? 0;
+    emoji = saveData.emoji ?? false;
+
+    if (Array.isArray(saveData.upgradeCount)) {
+        saveData.upgradeCount.forEach((count, index) => {
+            if (index < upgradeCount.length) {
+                upgradeCount[index] = count;
+                const uiEl = document.getElementById(`uppie${index}`);
+                if (uiEl) uiEl.innerText = count;
+            }
+        });
+    }
+
+    if (upgradeCount[1] > 0) {
+        applyNeon();
+    }
+
+    scoreEl.innerText = kdnScore;
+    autoEl.innerText = passiveKdn;
+    clickTrackEl.innerText = clickStrength;
+}
+
+buildUpgradeButtons();
+loadGame();
+
 setInterval(() => {
     if (emoji) {
         makeEmoji();
@@ -174,3 +236,4 @@ setInterval(() => {
 }, 300);
 
 setInterval(update, 1000);
+setInterval(saveGame, 5000);
