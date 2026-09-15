@@ -140,7 +140,7 @@ const upgrades = [
         flavourText: "you met me at a very chinese time of my life",
         label: "dance",
         dragon: true
-    }
+    },
     
     {
         upgrade: "Background Music",
@@ -169,7 +169,7 @@ const upgrades = [
         clickInc: 0,
         limit: 100,
         flavourText: "I think you own too much land now RICH KID",
-        label: "Kayden is really allergic to some plants. Therefore, you funded a farm to farm said plants and harass kayden.",
+        label: "kayden likes some plants, give these plants to him and he will give you claude tokens.",
     }
     
 ];
