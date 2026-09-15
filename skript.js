@@ -60,7 +60,17 @@ const upgrades = [
         flavourText: "",
         label: "emoji spam",
         emoji: true
-    }
+    },
+    {
+        upgrade: "Background Music",
+        cost: 150000,
+        normalInc: 0,
+        clickInc: 0,
+        limit: 1,
+        flavourText: "",
+        label: "bg music :) (btw its bad apple music)",
+        backgroundmusic: true
+    },
 ];
 
 const clickButton = document.getElementById("kdn");
@@ -69,6 +79,9 @@ const autoEl = document.getElementById("a");
 const scoreEl = document.getElementById("scor");
 const bg = document.getElementById("bg");
 const upgradesContainer = document.getElementById("upgrades-container");
+const music = new Audio("bamusic.mp3");
+music.loop = true;
+music.volume = 0.5;
 
 clickButton.addEventListener('click', handleClick);
 
@@ -139,6 +152,10 @@ function purchaseUpgrade(index) {
 
     if (upgrade.watermark === true) {
         applyWatermark();
+    }
+
+    if (upgrade.backgroundmusic === true) {
+        music.play();
     }
 
     if (upgrade.emoji === true) emoji = true;
