@@ -72,46 +72,6 @@ const upgradesContainer = document.getElementById("upgrades-container");
 
 clickButton.addEventListener('click', handleClick);
 
-const style = document.createElement("style");
-style.textContent = `
-    @keyframes fall {
-        0% { transform: translateY(-50px); opacity: 1; }
-        100% { transform: translateY(105vh); opacity: 0; }
-    }
-
-    @keyframes neonShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    @keyframes neonPulse {
-        0%, 100% { box-shadow: 0 0 15px #ff44cc, 0 0 30px #b026ff; }
-        50% { box-shadow: 0 0 30px #ff44cc, 0 0 60px #b026ff; }
-    }
-
-    .neon-bg {
-        background: linear-gradient(135deg, #b026ff, #ff44cc, #26d0ff, #b026ff);
-        background-size: 300% 300%;
-        color: #ffffff;
-        animation: neonShift 6s ease infinite, neonPulse 2s ease-in-out infinite;
-    }
-
-    #watermark-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('watermark.png');
-        background-repeat: repeat;
-        opacity: 0.3;
-        pointer-events: none;
-        z-index: 9998;
-    }
-`;
-document.head.appendChild(style);
-
 let emoji = false;
 const mostUsedEmojis = ["😂", "❤️", "🤣", "👍", "😭", "🙏", "😘", "🥰", "😍", "😊", "🎉", "✨"];
 
@@ -126,18 +86,12 @@ function makeEmoji() {
     const randomIndex = Math.floor(Math.random() * mostUsedEmojis.length);
 
     div.textContent = mostUsedEmojis[randomIndex];
+    div.className = "falling-emoji";
 
     const fallDuration = randint(3, 6);
-
-    div.style = `
-        position: fixed;
-        left: ${randint(0, window.innerWidth - 30)}px;
-        top: 0;
-        font-size: ${randint(24, 48)}px;
-        pointer-events: none;
-        z-index: 9999;
-        animation: fall ${fallDuration}s linear forwards;
-    `;
+    div.style.left = `${randint(0, window.innerWidth - 30)}px`;
+    div.style.fontSize = `${randint(24, 48)}px`;
+    div.style.animationDuration = `${fallDuration}s`;
 
     document.body.appendChild(div);
 
