@@ -2,6 +2,8 @@ let kdnScore = 0;
 let clickStrength = 1;
 let passiveKdn = 0;
 let upgradeCount = [];
+let musicStarted = false;
+
 
 const upgrades = [
     {
@@ -155,7 +157,7 @@ function purchaseUpgrade(index) {
     }
 
     if (upgrade.backgroundmusic === true) {
-        music.play();
+        startMusic();
     }
 
     if (upgrade.emoji === true) emoji = true;
@@ -171,6 +173,15 @@ function purchaseUpgrade(index) {
     saveGame();
 }
 
+function startMusic() {
+    if (musicStarted) return;
+    music.play().then(() => {
+        musicStarted = true;
+    }).catch(err => {
+        console.log("Music blocked, will retry on next click:", err);
+    });
+}
+
 function applyNeon() {
     bg.classList.add("neon-bg");
 }
@@ -184,6 +195,9 @@ function applyWatermark() {
 }
 
 function handleClick() {
+    if (upgradeCount[6] > 0) {
+        startMusic();
+    }
     kdnScore += clickStrength;
     scoreEl.innerText = kdnScore;
     saveGame();
