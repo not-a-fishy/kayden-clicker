@@ -119,6 +119,7 @@ const upgrades = [
         limit: 5,
         flavourText: "wow i love london system",
         label: "e4 im so good"
+        chess: true
     },
     {
         upgrade: "Emoji",
@@ -244,7 +245,10 @@ function purchaseUpgrade(index) {
     if (upgrade.backgroundmusic === true) {
         startMusic();
     }
-
+    if (upgrade.chess === true) {
+        applychess();
+    }
+    
     if (upgrade.playvideo === true) {
         showVideo();
         playYouTubeVideo();
@@ -274,6 +278,13 @@ function applyWatermark() {
 
     const overlay = document.createElement("div");
     overlay.id = "watermark-overlay";
+    document.body.appendChild(overlay);
+}
+function applychess() {
+    if (document.getElementById("chess-overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "chess-overlay";
     document.body.appendChild(overlay);
 }
 
