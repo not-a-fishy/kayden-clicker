@@ -132,6 +132,17 @@ const upgrades = [
         emoji: true
     },
     {
+        upgrade: "Dragoon",
+        cost: 15000,
+        normalInc: 0,
+        clickInc: 0,
+        limit: 1,
+        flavourText: "you met me at a very chinese time of my life",
+        label: "dance",
+        dragon: true
+    }
+    
+    {
         upgrade: "Background Music",
         cost: 150000,
         normalInc: 10000,
@@ -160,6 +171,7 @@ const upgrades = [
         flavourText: "I think you own too much land now RICH KID",
         label: "Kayden is really allergic to some plants. Therefore, you funded a farm to farm said plants and harass kayden.",
     }
+    
 ];
 
 const clickButton = document.getElementById("kdn");
@@ -257,7 +269,9 @@ function purchaseUpgrade(index) {
     if (upgrade.chess === true) {
         applychess();
     }
-    
+    if (upgrade.dragon === true) {
+        applydragon();
+    }
     if (upgrade.playvideo === true) {
         showVideo();
         playYouTubeVideo();
@@ -294,6 +308,13 @@ function applychess() {
 
     const overlay = document.createElement("div");
     overlay.id = "chess-overlay";
+    document.body.appendChild(overlay);
+}
+function applydragon() {
+    if (document.getElementById("dragon-overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "dragon-overlay";
     document.body.appendChild(overlay);
 }
 
@@ -371,6 +392,9 @@ function loadGame() {
             }
             if (upgrade.chess) {
                 applychess();
+            }
+            if (upgrade.dragon) {
+                applydragon();
             }
         }
     });
