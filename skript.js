@@ -31,6 +31,15 @@ const upgrades = [
         limit: 100,
         flavourText: "You ran out of money to buy claude tokens :( (Upgrade Limit Reached)",
         label: "buy some Claude tokens"
+    },
+    {
+        upgrade: "Chess Larp",
+        cost: 15000*upgradeCount,
+        normalInc: 20,
+        clickInc: 15,
+        limit: 5,
+        flavourText: "wow i love london system",
+        label: "e4"
     }
 ];
 
