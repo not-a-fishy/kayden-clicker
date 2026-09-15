@@ -1,7 +1,6 @@
 let kdnScore = 0;
 let clickStrength = 1;
 let passiveKdn = 0;
-let multiplier = 1;
 let upgradeCount = [];
 
 const upgrades = [
@@ -12,8 +11,7 @@ const upgrades = [
         clickInc: 0,
         limit: 32,
         flavourText: "You manage to get a whole class pissed off against one guy. Wow... (Upgrade Limit Reached)",
-        label: "hire someone in 1A3 to harass Kayden",
-        multiplier: 0,
+        label: "hire someone in 1A3 to harass Kayden"
     },
     {
         upgrade: "Neon (cosmetic)",
@@ -23,18 +21,16 @@ const upgrades = [
         limit: 1,
         flavourText: "",
         neon: true,
-        label: "unlock a nice background",
-        multiplier: 0.2,
+        label: "unlock a nice background"
     },
     {
-        upgrade: "Vibe Code",
+        upgrade: "Claude",
         cost: 2000,
         normalInc: 0,
         clickInc: 10,
         limit: 100,
         flavourText: "You ran out of money to buy claude tokens :( (Upgrade Limit Reached)",
-        label: "buy some Claude tokens",
-        multiplier: 0,
+        label: "buy some Claude tokens"
     },
     {
         upgrade: "Chess Larp",
@@ -43,8 +39,7 @@ const upgrades = [
         clickInc: 15,
         limit: 5,
         flavourText: "wow i love london system",
-        label: "e4 im so good",
-        multiplier: 0,
+        label: "e4 im so good"
     },
     {
         upgrade: "Emoji",
@@ -54,8 +49,17 @@ const upgrades = [
         limit: 1,
         flavourText: "",
         label: "emoji spam",
-        emoji: true,
-        multiplier: 0,
+        emoji: true
+    },
+    {
+        upgrade: "Watermark (cosmetic)",
+        cost: 20,
+        normalInc: 0,
+        clickInc: 0,
+        limit: 1,
+        flavourText: "",
+        label: "slap a watermark on everything",
+        watermark: true
     }
 ];
 
@@ -73,6 +77,37 @@ style.textContent = `
     @keyframes fall {
         0% { transform: translateY(-50px); opacity: 1; }
         100% { transform: translateY(105vh); opacity: 0; }
+    }
+
+    @keyframes neonShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes neonPulse {
+        0%, 100% { box-shadow: 0 0 15px #ff44cc, 0 0 30px #b026ff; }
+        50% { box-shadow: 0 0 30px #ff44cc, 0 0 60px #b026ff; }
+    }
+
+    .neon-bg {
+        background: linear-gradient(135deg, #b026ff, #ff44cc, #26d0ff, #b026ff);
+        background-size: 300% 300%;
+        color: #ffffff;
+        animation: neonShift 6s ease infinite, neonPulse 2s ease-in-out infinite;
+    }
+
+    #watermark-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('watermark.png');
+        background-repeat: repeat;
+        opacity: 0.3;
+        pointer-events: none;
+        z-index: 9998;
     }
 `;
 document.head.appendChild(style);
@@ -148,12 +183,15 @@ function purchaseUpgrade(index) {
         applyNeon();
     }
 
+    if (upgrade.watermark === true) {
+        applyWatermark();
+    }
+
     if (upgrade.emoji === true) emoji = true;
 
     kdnScore -= upgrade.cost;
     passiveKdn += upgrade.normalInc;
     clickStrength += upgrade.clickInc;
-    multiplier += upgrade.multiplier;
     upgradeCount[index] += 1;
 
     document.getElementById(`uppie${index}`).innerText = upgradeCount[index];
@@ -163,9 +201,15 @@ function purchaseUpgrade(index) {
 }
 
 function applyNeon() {
-    bg.style.background = "linear-gradient(135deg, #b026ff, #ff44cc)";
-    bg.style.boxShadow = "0 0 15px #ff44cc, 0 0 30px #b026ff";
-    bg.style.color = "#ffffff";
+    bg.classList.add("neon-bg");
+}
+
+function applyWatermark() {
+    if (document.getElementById("watermark-overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "watermark-overlay";
+    document.body.appendChild(overlay);
 }
 
 function handleClick() {
@@ -175,7 +219,7 @@ function handleClick() {
 }
 
 function update() {
-    kdnScore += passiveKdn*multiplier;
+    kdnScore += passiveKdn;
     scoreEl.innerText = kdnScore;
     autoEl.innerText = passiveKdn;
     clickTrackEl.innerText = clickStrength;
@@ -224,9 +268,12 @@ function loadGame() {
         });
     }
 
-    if (upgradeCount[1] > 0) {
-        applyNeon();
-    }
+    upgrades.forEach((upgrade, index) => {
+        if (upgradeCount[index] > 0) {
+            if (upgrade.neon) applyNeon();
+            if (upgrade.watermark) applyWatermark();
+        }
+    });
 
     scoreEl.innerText = kdnScore;
     autoEl.innerText = passiveKdn;
