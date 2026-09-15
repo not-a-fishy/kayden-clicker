@@ -360,6 +360,9 @@ function loadGame() {
             if (upgrade.watermark) {
                 applyWatermark();
             }
+            if (upgrade.chess) {
+                applychess();
+            }
         }
     });
 
