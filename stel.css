@@ -206,6 +206,13 @@ div:last-of-type h1 {
     z-index: 9998;
 }
 
+#chess-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-image: url('chess.png');
+}
+
 .falling-emoji {
     position: fixed;
     top: 0;
