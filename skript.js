@@ -9,7 +9,11 @@ let player;
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('bavideo', {
         events: {
-            'onReady': () => console.log("YouTube Player Loaded!")
+            'onReady': () => {
+                if (upgradeCount[7] > 0) {
+                    player.playVideo();
+                }
+            }
         }
     });
 }
