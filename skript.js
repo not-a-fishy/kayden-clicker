@@ -1,6 +1,7 @@
 let kdnScore = 0;
 let clickStrength = 1;
 let passiveKdn = 0;
+let multiplier = 1;
 let upgradeCount = [];
 
 const upgrades = [
@@ -11,7 +12,8 @@ const upgrades = [
         clickInc: 0,
         limit: 32,
         flavourText: "You manage to get a whole class pissed off against one guy. Wow... (Upgrade Limit Reached)",
-        label: "hire someone in 1A3 to harass Kayden"
+        label: "hire someone in 1A3 to harass Kayden",
+        multiplier: 0,
     },
     {
         upgrade: "Neon (cosmetic)",
@@ -21,16 +23,18 @@ const upgrades = [
         limit: 1,
         flavourText: "",
         neon: true,
-        label: "unlock a nice background"
+        label: "unlock a nice background",
+        multiplier: 0.2,
     },
     {
-        upgrade: "Claude",
+        upgrade: "Vibe Code",
         cost: 2000,
         normalInc: 0,
         clickInc: 10,
         limit: 100,
         flavourText: "You ran out of money to buy claude tokens :( (Upgrade Limit Reached)",
-        label: "buy some Claude tokens"
+        label: "buy some Claude tokens",
+        multiplier: 0,
     },
     {
         upgrade: "Chess Larp",
@@ -39,7 +43,8 @@ const upgrades = [
         clickInc: 15,
         limit: 5,
         flavourText: "wow i love london system",
-        label: "e4 im so good"
+        label: "e4 im so good",
+        multiplier: 0,
     },
     {
         upgrade: "Emoji",
@@ -49,7 +54,8 @@ const upgrades = [
         limit: 1,
         flavourText: "",
         label: "emoji spam",
-        emoji: true
+        emoji: true,
+        multiplier: 0,
     }
 ];
 
@@ -147,6 +153,7 @@ function purchaseUpgrade(index) {
     kdnScore -= upgrade.cost;
     passiveKdn += upgrade.normalInc;
     clickStrength += upgrade.clickInc;
+    multiplier += upgrade.multiplier;
     upgradeCount[index] += 1;
 
     document.getElementById(`uppie${index}`).innerText = upgradeCount[index];
@@ -168,7 +175,7 @@ function handleClick() {
 }
 
 function update() {
-    kdnScore += passiveKdn;
+    kdnScore += passiveKdn*multiplier;
     scoreEl.innerText = kdnScore;
     autoEl.innerText = passiveKdn;
     clickTrackEl.innerText = clickStrength;
