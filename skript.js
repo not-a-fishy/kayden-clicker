@@ -14,6 +14,16 @@ const upgrades = [
         label: "hire someone in 1A3 to harass Kayden"
     },
     {
+        upgrade: "Watermark (cosmetic)",
+        cost: 20,
+        normalInc: 0,
+        clickInc: 0,
+        limit: 1,
+        flavourText: "",
+        label: "slap a watermark on everything",
+        watermark: true
+    },
+    {
         upgrade: "Neon (cosmetic)",
         cost: 200,
         normalInc: 0,
@@ -50,16 +60,6 @@ const upgrades = [
         flavourText: "",
         label: "emoji spam",
         emoji: true
-    },
-    {
-        upgrade: "Watermark (cosmetic)",
-        cost: 20,
-        normalInc: 0,
-        clickInc: 0,
-        limit: 1,
-        flavourText: "",
-        label: "slap a watermark on everything",
-        watermark: true
     }
 ];
 
