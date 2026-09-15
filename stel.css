@@ -64,6 +64,7 @@ p {
     background: none;
     box-shadow: 0px 8px 0px #884400, 0px 15px 20px rgba(0,0,0,0.3);
     transition: all 0.1s ease;
+    z-index: 9999;
 }
 
 #kdnimg {
