@@ -39,7 +39,7 @@ const upgrades = [
         clickInc: 15,
         limit: 5,
         flavourText: "wow i love london system",
-        label: "e4"
+        label: "e4 im so good"
     }
 ];
 
