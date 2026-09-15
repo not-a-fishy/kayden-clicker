@@ -13,7 +13,7 @@
     display: none;
     position: fixed;
     top: 0;
-    left: calc(100vw - 350px - 100px);
+    left: calc(100vw - 350px);
 }
 
 h1 {
