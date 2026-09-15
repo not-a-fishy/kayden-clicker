@@ -153,7 +153,7 @@ const upgrades = [
     },
     {
         upgrade: "Kayden Plant Farm",
-        cost: 1000000000,
+        cost: 10000000,
         normalInc: 10000000,
         clickInc: 0,
         limit: 100,
