@@ -34,7 +34,7 @@ const upgrades = [
     },
     {
         upgrade: "Chess Larp",
-        cost: 15000*upgradeCount,
+        cost: 15000*(upgradeCount+1),
         normalInc: 20,
         clickInc: 15,
         limit: 5,
