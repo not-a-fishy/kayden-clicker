@@ -134,8 +134,8 @@ const upgrades = [
     {
         upgrade: "Background Music",
         cost: 150000,
-        normalInc: 0,
-        clickInc: 0,
+        normalInc: 10000,
+        clickInc: 1000,
         limit: 1,
         flavourText: "u alr got this",
         label: "bg music :) (btw its bad apple music)",
@@ -144,12 +144,21 @@ const upgrades = [
     {
         upgrade: "Video",
         cost: 500000,
-        normalInc: 0,
-        clickInc: 0,
+        normalInc: 1000,
+        clickInc: 10000,
         limit: 1,
         flavourText: "u alr got this",
         label: "bad apple video",
         playvideo: true
+    },
+    {
+        upgrade: "Kayden Plant Farm",
+        cost: 1000000000,
+        normalInc: 10000000,
+        clickInc: 0,
+        limit: 100,
+        flavourText: "I think you own too much land now RICH KID",
+        label: "Kayden is really allergic to some plants. Therefore, you funded a farm to farm said plants and harass kayden.",
     }
 ];
 
