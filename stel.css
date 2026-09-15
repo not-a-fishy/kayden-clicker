@@ -207,11 +207,18 @@ div:last-of-type h1 {
 }
 
 #chess-overlay {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
+    width: 100%;
+    height: 200px; /* Adjust height as needed */
     background-image: url('chess.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    pointer-events: none;
+    z-index: 9997;
 }
+
 
 .falling-emoji {
     position: fixed;
