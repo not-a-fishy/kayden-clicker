@@ -17,6 +17,7 @@ function onYouTubeIframeAPIReady() {
 function playYouTubeVideo() {
     if (player && player.playVideo) {
         player.playVideo();
+        document.getElementById("bavideo").style.display = "block";
     }
 }
 
