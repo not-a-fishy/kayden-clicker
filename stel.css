@@ -219,19 +219,25 @@ div:last-of-type h1 {
   z-index: 9997; 
   opacity: 1;              
 }
+
 #dragon-overlay { 
   position: fixed; 
   bottom: 20px;           
   left: 20px;             
   width: 400px;            
   height: 400px;           
-  background-image: url('dragon.png'); 
-  background-repeat: no-repeat; 
-  background-size: contain; 
   pointer-events: none; 
   z-index: 9997; 
   opacity: 1;              
+  overflow: hidden; /* Ensures video stays inside the 400x400 box */
 }
+
+#dragon-overlay video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Replaces background-size: contain */
+}
+
 
 .falling-emoji {
     position: fixed;
