@@ -19,7 +19,7 @@ const upgrades = [
         normalInc: 0,
         clickInc: 0,
         limit: 1,
-        flavourText: "yay you get nice background",
+        flavourText: "",
         neon: true,
         label: "unlock a nice background"
     },
@@ -40,6 +40,16 @@ const upgrades = [
         limit: 5,
         flavourText: "wow i love london system",
         label: "e4 im so good"
+    },
+    {
+        upgrade: "Emoji",
+        cost: 15000,
+        normalInc: 0,
+        clickInc: 0,
+        limit: 1,
+        flavourText: "",
+        label: "emoji spam",
+        emoji: true
     }
 ];
 
@@ -52,7 +62,48 @@ const upgradesContainer = document.getElementById("upgrades-container");
 
 clickButton.addEventListener('click', handleClick);
 
+const style = document.createElement("style");
+style.textContent = `
+    @keyframes fall {
+        0% { transform: translateY(-50px); opacity: 1; }
+        100% { transform: translateY(105vh); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
 buildUpgradeButtons();
+
+let emoji = false;
+const mostUsedEmojis = ["😂", "❤️", "🤣", "👍", "😭", "🙏", "😘", "🥰", "😍", "😊", "🎉", "✨"];
+
+function randint(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function makeEmoji() {
+    const div = document.createElement("div");
+    const randomIndex = Math.floor(Math.random() * mostUsedEmojis.length);
+    
+    div.textContent = mostUsedEmojis[randomIndex];
+    
+    const fallDuration = randint(3, 6); 
+    
+    div.style = `
+        position: fixed;
+        left: ${randint(0, window.innerWidth - 30)}px;
+        top: 0;
+        font-size: ${randint(24, 48)}px;
+        pointer-events: none;
+        z-index: 9999;
+        animation: fall ${fallDuration}s linear forwards;
+    `;
+    
+    document.body.appendChild(div);
+    
+    setTimeout(() => {
+        div.remove();
+    }, fallDuration * 1000);
+}
 
 function buildUpgradeButtons() {
     upgrades.forEach((upgrade, index) => {
@@ -79,7 +130,7 @@ function purchaseUpgrade(index) {
 
     if (owned >= upgrade.limit) {
         alert(upgrade.flavourText);
-        return;
+        return
     }
 
     if (kdnScore < upgrade.cost) {
@@ -92,6 +143,8 @@ function purchaseUpgrade(index) {
         bg.style.boxShadow = "0 0 15px #ff44cc, 0 0 30px #b026ff";
         bg.style.color = "#ffffff";
     }
+
+    if (upgrade.emoji === true) emoji = true;
 
     kdnScore -= upgrade.cost;
     passiveKdn += upgrade.normalInc;
@@ -113,5 +166,11 @@ function update() {
     autoEl.innerText = passiveKdn;
     clickTrackEl.innerText = clickStrength;
 }
+
+setInterval(() => {
+    if (emoji) {
+        makeEmoji();
+    }
+}, 300);
 
 setInterval(update, 1000);
