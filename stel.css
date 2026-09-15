@@ -219,7 +219,19 @@ div:last-of-type h1 {
   z-index: 9997; 
   opacity: 1;              
 }
-
+#dragon-overlay { 
+  position: fixed; 
+  bottom: 20px;           
+  left: 20px;             
+  width: 400px;            
+  height: 400px;           
+  background-image: url('dragon.png'); 
+  background-repeat: no-repeat; 
+  background-size: contain; 
+  pointer-events: none; 
+  z-index: 9997; 
+  opacity: 1;              
+}
 
 .falling-emoji {
     position: fixed;
