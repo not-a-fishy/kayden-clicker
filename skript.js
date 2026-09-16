@@ -324,16 +324,16 @@ function handleClick() {
     }
 
     kdnScore += clickStrength;
-    scoreEl.innerText = kdnScore;
+    scoreEl.innerText = beautify(kdnScore);
     saveGame();
 }
 
 function update() {
     kdnScore += passiveKdn;
 
-    scoreEl.innerText = kdnScore;
-    autoEl.innerText = passiveKdn;
-    clickTrackEl.innerText = clickStrength;
+    scoreEl.innerText = beautify(kdnScore);
+    autoEl.innerText = beautify(passiveKdn);
+    clickTrackEl.innerText = beautify(clickStrength);
 }
 
 function saveGame() {
