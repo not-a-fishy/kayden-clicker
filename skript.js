@@ -229,7 +229,7 @@ function buildUpgradeButtons() {
         button.innerHTML = `
             <b>${upgrade.upgrade}.</b>
             <b class="cost">
-                Costs <b class="actcost">${upgrade.cost}</b> Claude Tokens
+                Costs <b class="actcost">${beautify(upgrade.cost)}</b> Claude Tokens
             </b>
             ${upgrade.label}
             <b id="uppie${index}" class="amnt">0</b>
@@ -287,7 +287,7 @@ function purchaseUpgrade(index) {
     upgradeCount[index] += 1;
 
     document.getElementById(`uppie${index}`).innerText = upgradeCount[index];
-    scoreEl.innerText = kdnScore;
+    scoreEl.innerText = beautify(kdnScore);
 
     saveGame();
 }
@@ -402,6 +402,36 @@ function loadGame() {
     scoreEl.innerText = kdnScore;
     autoEl.innerText = passiveKdn;
     clickTrackEl.innerText = clickStrength;
+}
+
+const suffixes = [
+    "", "k", "M", "B", "T",
+    "Qa", "Qi", "Sx", "Sp", "Oc", "No",
+    "Dc", "Ud", "Dd", "Td", "Qad", "Qid",
+    "Sxd", "Spd", "Ocd", "Nod",
+    "Vg", "Uvg", "Dvg", "Tvg", "Qavg", "Qivg",
+    "Sxvg", "Spvg", "Ocvg", "Novg",
+    "Tg", "Utg", "Dtg", "Ttg", "Qatg", "Qitg",
+    "Sxtg", "Sptg", "Octg", "Notg",
+    "Qag", "Uqag", "Dqag", "Tqag", "Qaqag", "Qiqag"
+];
+
+function beautify(num) {
+    if (num === 0) return "0";
+
+    const tier = Math.floor(Math.log10(Math.abs(num)) / 3);
+
+    if (tier <= 0) return num.toString();
+
+    if (tier >= suffixes.length) {
+        return num.toExponential(2);
+    }
+
+    const value = num / Math.pow(1000, tier);
+
+    return value
+        .toFixed(2)
+        .replace(/\.?0+$/, "") + suffixes[tier];
 }
 
 buildUpgradeButtons();
