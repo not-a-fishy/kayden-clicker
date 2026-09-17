@@ -1,67 +1,58 @@
+
 let kdnScore = 0;
 let clickStrength = 100000;
 let passiveKdn = 0;
 let upgradeCount = [];
 let musicStarted = false;
 
-let player;
+let player = null;
 
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('bavideo', {
-        events: {
-            'onReady': () => {
-                console.log("YouTube Player Loaded!");
-
-                if (upgradeCount[7] > 0 || upgradeCount[6] > 0) {
-                    autoStartOnReload();
-                }
-            },
-            'onStateChange': onPlayerStateChange
-        }
-    });
-}
-
-function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-        player.playVideo();
-    }
+function getVideo() {
+    return document.getElementById("bavideo");
 }
 
 function autoStartOnReload() {
-    if (!player || !player.playVideo) return;
+    const video = getVideo();
+    if (!video) return;
 
-    if (upgradeCount[7] > 0) {
+    if (upgradeCount[8] > 0) {
         showVideo();
     }
 
-    player.playVideo();
-    musicStarted = true;
+    video.muted = true;
 
-    setTimeout(() => {
-        if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
-            player.mute();
-            player.playVideo();
-            
-            const unmuteOnInteraction = () => {
-                player.unMute();
-                player.playVideo();
-                document.removeEventListener("click", unmuteOnInteraction);
-            };
-            document.addEventListener("click", unmuteOnInteraction);
-        }
-    }, 500);
+    video.play().then(() => {
+        musicStarted = true;
+    }).catch(() => {
+        console.log("Video autoplay was blocked.");
+    });
+
+    const unmuteOnInteraction = () => {
+        video.muted = false;
+        video.play().catch(() => {});
+        musicStarted = true;
+        document.removeEventListener("click", unmuteOnInteraction);
+    };
+
+    document.addEventListener("click", unmuteOnInteraction);
 }
 
 function playYouTubeVideo() {
-    if (player && player.playVideo) {
-        player.unMute();
-        player.playVideo();
+    const video = getVideo();
+    if (!video) return;
+
+    video.muted = false;
+
+    video.play().then(() => {
         musicStarted = true;
-    }
+    }).catch(() => {
+        console.log("Video playback failed.");
+    });
 }
 
 function showVideo() {
-    const video = document.getElementById("bavideo");
+    const video = getVideo();
+
     if (video) {
         video.style.display = "block";
     }
@@ -71,6 +62,7 @@ function startMusic() {
     if (musicStarted) return;
     playYouTubeVideo();
 }
+
 
 const upgrades = [
     {
@@ -141,7 +133,6 @@ const upgrades = [
         label: "dance",
         dragon: true
     },
-    
     {
         upgrade: "Background Music",
         cost: 150000,
@@ -169,10 +160,10 @@ const upgrades = [
         clickInc: 0,
         limit: 100,
         flavourText: "I think you own too much land now RICH KID",
-        label: "kayden likes some plants, give these plants to him and he will give you claude tokens.",
+        label: "kayden likes some plants, give these plants to him and he will give you claude tokens."
     }
-    
 ];
+
 
 const clickButton = document.getElementById("kdn");
 const clickTrackEl = document.getElementById("m");
@@ -192,13 +183,17 @@ const mostUsedEmojis = [
 
 const SAVE_KEY = "kaydenClickerSave";
 
+
 function randint(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+
 function makeEmoji() {
     const div = document.createElement("div");
-    const randomIndex = Math.floor(Math.random() * mostUsedEmojis.length);
+    const randomIndex = Math.floor(
+        Math.random() * mostUsedEmojis.length
+    );
 
     div.textContent = mostUsedEmojis[randomIndex];
     div.className = "falling-emoji";
@@ -216,8 +211,10 @@ function makeEmoji() {
     }, fallDuration * 1000);
 }
 
+
 function buildUpgradeButtons() {
     upgradesContainer.innerHTML = "";
+
     upgrades.forEach((upgrade, index) => {
         upgradeCount[index] = 0;
 
@@ -235,11 +232,14 @@ function buildUpgradeButtons() {
             <b id="uppie${index}" class="amnt">0</b>
         `;
 
-        button.addEventListener("click", () => purchaseUpgrade(index));
+        button.addEventListener("click", () => {
+            purchaseUpgrade(index);
+        });
 
         upgradesContainer.appendChild(button);
     });
 }
+
 
 function purchaseUpgrade(index) {
     const upgrade = upgrades[index];
@@ -266,12 +266,15 @@ function purchaseUpgrade(index) {
     if (upgrade.backgroundmusic === true) {
         startMusic();
     }
+
     if (upgrade.chess === true) {
         applychess();
     }
+
     if (upgrade.dragon === true) {
         applydragon();
     }
+
     if (upgrade.playvideo === true) {
         showVideo();
         playYouTubeVideo();
@@ -286,47 +289,62 @@ function purchaseUpgrade(index) {
     clickStrength += upgrade.clickInc;
     upgradeCount[index] += 1;
 
-    document.getElementById(`uppie${index}`).innerText = upgradeCount[index];
+    document.getElementById(`uppie${index}`).innerText =
+        upgradeCount[index];
+
     scoreEl.innerText = beautify(kdnScore);
 
     saveGame();
 }
 
+
 function applyNeon() {
     if (bg) bg.classList.add("neon-bg");
 }
+
 
 function applyWatermark() {
     if (document.getElementById("watermark-overlay")) return;
 
     const overlay = document.createElement("div");
     overlay.id = "watermark-overlay";
+
     document.body.appendChild(overlay);
 }
+
+
 function applychess() {
     if (document.getElementById("chess-overlay")) return;
 
     const overlay = document.createElement("div");
     overlay.id = "chess-overlay";
+
     document.body.appendChild(overlay);
 }
+
+
 function applydragon() {
     if (document.getElementById("dragon-overlay")) return;
 
     const overlay = document.createElement("div");
     overlay.id = "dragon-overlay";
+
     document.body.appendChild(overlay);
 }
 
+
 function handleClick() {
-    if (upgradeCount[6] > 0 || upgradeCount[7] > 0) {
+    if (upgradeCount[7] > 0 || upgradeCount[8] > 0) {
         startMusic();
     }
 
     kdnScore += clickStrength;
+
     scoreEl.innerText = beautify(kdnScore);
+
     saveGame();
 }
+
 
 function update() {
     kdnScore += passiveKdn;
@@ -335,6 +353,7 @@ function update() {
     autoEl.innerText = beautify(passiveKdn);
     clickTrackEl.innerText = beautify(clickStrength);
 }
+
 
 function saveGame() {
     const saveData = {
@@ -346,18 +365,24 @@ function saveGame() {
     };
 
     try {
-        localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+        localStorage.setItem(
+            SAVE_KEY,
+            JSON.stringify(saveData)
+        );
     } catch (e) {
         console.error("Failed to save game:", e);
     }
 }
+
 
 function loadGame() {
     let saveData;
 
     try {
         const raw = localStorage.getItem(SAVE_KEY);
+
         if (!raw) return;
+
         saveData = JSON.parse(raw);
     } catch (e) {
         console.error("Failed to load save:", e);
@@ -375,6 +400,7 @@ function loadGame() {
                 upgradeCount[index] = count;
 
                 const uiEl = document.getElementById(`uppie${index}`);
+
                 if (uiEl) {
                     uiEl.innerText = count;
                 }
@@ -387,22 +413,34 @@ function loadGame() {
             if (upgrade.neon) {
                 applyNeon();
             }
+
             if (upgrade.watermark) {
                 applyWatermark();
             }
+
             if (upgrade.chess) {
                 applychess();
             }
+
             if (upgrade.dragon) {
                 applydragon();
+            }
+
+            if (upgrade.backgroundmusic) {
+                setTimeout(autoStartOnReload, 100);
+            }
+
+            if (upgrade.playvideo) {
+                showVideo();
             }
         }
     });
 
-    scoreEl.innerText = kdnScore;
-    autoEl.innerText = passiveKdn;
-    clickTrackEl.innerText = clickStrength;
+    scoreEl.innerText = beautify(kdnScore);
+    autoEl.innerText = beautify(passiveKdn);
+    clickTrackEl.innerText = beautify(clickStrength);
 }
+
 
 const suffixes = [
     "", "k", "M", "B", "T",
@@ -416,10 +454,13 @@ const suffixes = [
     "Qag", "Uqag", "Dqag", "Tqag", "Qaqag", "Qiqag"
 ];
 
+
 function beautify(num) {
     if (num === 0) return "0";
 
-    const tier = Math.floor(Math.log10(Math.abs(num)) / 3);
+    const tier = Math.floor(
+        Math.log10(Math.abs(num)) / 3
+    );
 
     if (tier <= 0) return num.toString();
 
@@ -434,8 +475,10 @@ function beautify(num) {
         .replace(/\.?0+$/, "") + suffixes[tier];
 }
 
+
 buildUpgradeButtons();
 loadGame();
+
 
 setInterval(() => {
     if (emoji) {
