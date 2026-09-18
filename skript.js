@@ -7,7 +7,7 @@ let inflationMultiplier = 1;
 let player = null;
 const SAVE_KEY = "kaydenClickerSaveV2";
 
-if (!localstorage.getItem(SAVE_KEY)) {
+if (!localStorage.getItem(SAVE_KEY)) {
     localStorage.clear();
     location.reload();
 }
