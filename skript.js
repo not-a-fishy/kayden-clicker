@@ -5,8 +5,6 @@ let upgradeCount = [];
 let musicStarted = false;
 let inflationMultiplier = 1;
 
-localstorage.clear();
-
 let player = null;
 
 function getVideo() {
