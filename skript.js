@@ -4,8 +4,9 @@ let passiveKdn = 0;
 let upgradeCount = [];
 let musicStarted = false;
 let inflationMultiplier = 1;
-
 let player = null;
+
+localstorage.clear();
 
 function getVideo() {
     return document.getElementById("bavideo");
