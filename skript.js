@@ -1,5 +1,5 @@
 let kdnScore = 0;
-let clickStrength = 100000;
+let clickStrength = 1;
 let passiveKdn = 0;
 let upgradeCount = [];
 let musicStarted = false;
