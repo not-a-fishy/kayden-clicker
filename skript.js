@@ -7,11 +7,6 @@ let inflationMultiplier = 1;
 let player = null;
 const SAVE_KEY = "kaydenClickerSaveV2";
 
-if (!localStorage.getItem(SAVE_KEY)) {
-    localStorage.clear();
-    location.reload();
-}
-
 function getVideo() {
     return document.getElementById("bavideo");
 }
@@ -687,6 +682,11 @@ function beautify(num) {
         .replace(/\.?0+$/, "") + suffixes[tier];
 }
 
+if (!localStorage.getItem(SAVE_KEY)) {
+    localStorage.clear();
+    location.reload();
+    save();
+}
 
 buildUpgradeButtons();
 loadGame();
