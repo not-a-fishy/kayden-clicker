@@ -5,7 +5,9 @@ let upgradeCount = [];
 let musicStarted = false;
 let inflationMultiplier = 1;
 let player = null;
+
 const SAVE_KEY = "kaydenClickerSaveV2";
+const RESET_VERSION = "3";
 
 function getVideo() {
     return document.getElementById("bavideo");
@@ -594,7 +596,7 @@ function loadGame() {
     }
 
     kdnScore = saveData.kdnScore ?? 0;
-    clickStrength = saveData.clickStrength ?? 1;
+    clickStrength = saveData.clickStrength ?? 100000;
     passiveKdn = saveData.passiveKdn ?? 0;
     emoji = saveData.emoji ?? false;
     inflationMultiplier = saveData.inflationMultiplier ?? 1;
@@ -682,11 +684,13 @@ function beautify(num) {
         .replace(/\.?0+$/, "") + suffixes[tier];
 }
 
-if (!localStorage.getItem(SAVE_KEY)) {
+
+// ONE-TIME GLOBAL RESET
+if (localStorage.getItem("kaydenClickerResetVersion") !== RESET_VERSION) {
     localStorage.clear();
-    location.reload();
-    save();
+    localStorage.setItem("kaydenClickerResetVersion", RESET_VERSION);
 }
+
 
 buildUpgradeButtons();
 loadGame();
