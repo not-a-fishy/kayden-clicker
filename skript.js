@@ -685,7 +685,6 @@ function beautify(num) {
 }
 
 
-// ONE-TIME GLOBAL RESET
 if (localStorage.getItem("kaydenClickerResetVersion") !== RESET_VERSION) {
     localStorage.clear();
     localStorage.setItem("kaydenClickerResetVersion", RESET_VERSION);
