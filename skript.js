@@ -6,6 +6,9 @@ let musicStarted = false;
 let inflationMultiplier = 1;
 let player = null;
 
+localStorage.clear();
+location.reload();
+
 function getVideo() {
     return document.getElementById("bavideo");
 }
