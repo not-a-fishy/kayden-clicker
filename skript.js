@@ -1,9 +1,9 @@
-
 let kdnScore = 0;
 let clickStrength = 100000;
 let passiveKdn = 0;
 let upgradeCount = [];
 let musicStarted = false;
+let inflationMultiplier = 1;
 
 let player = null;
 
@@ -161,6 +161,97 @@ const upgrades = [
         limit: 100,
         flavourText: "I think you own too much land now RICH KID",
         label: "kayden likes some plants, give these plants to him and he will give you claude tokens."
+    },
+    {
+        upgrade: "Kayden Mining Corporation",
+        cost: 50000000,
+        normalInc: 50000000,
+        clickInc: 0,
+        limit: 50,
+        flavourText: "The entire economy is now dependent on Kayden. (Upgrade Limit Reached)",
+        label: "mine Claude Tokens from the ground"
+    },
+    {
+        upgrade: "Kayden Bank",
+        cost: 250000000,
+        normalInc: 100000000,
+        clickInc: 25000,
+        limit: 25,
+        flavourText: "The bank has collapsed. Somehow you still got the tokens. (Upgrade Limit Reached)",
+        label: "open a completely legitimate bank"
+    },
+    {
+        upgrade: "Quantum Kayden",
+        cost: 1000000000,
+        normalInc: 500000000,
+        clickInc: 100000,
+        limit: 10,
+        flavourText: "There are now multiple Kaydens. This is probably bad. (Upgrade Limit Reached)",
+        label: "split Kayden into several dimensions"
+    },
+    {
+        upgrade: "Time Machine",
+        cost: 10000000000,
+        normalInc: 2000000000,
+        clickInc: 1000000,
+        limit: 5,
+        flavourText: "You went back in time and bought this earlier. Somehow. (Upgrade Limit Reached)",
+        label: "go back 10 seconds and buy yourself a Time Machine"
+    },
+    {
+        upgrade: "Inflation",
+        cost: 100000000000,
+        normalInc: 10000000000,
+        clickInc: 5000000,
+        limit: 1,
+        flavourText: "Everything costs 50% more now.",
+        label: "destroy the value of Claude Tokens",
+        inflation: true
+    },
+    {
+        upgrade: "Kayden AI",
+        cost: 1000000000000,
+        normalInc: 100000000000,
+        clickInc: 25000000,
+        limit: 10,
+        flavourText: "It has been trained exclusively on Kayden lore. (Upgrade Limit Reached)",
+        label: "deploy an unnecessarily large model"
+    },
+    {
+        upgrade: "AGI Kayden",
+        cost: 10000000000000,
+        normalInc: 1000000000000,
+        clickInc: 100000000,
+        limit: 5,
+        flavourText: "Nobody knows what it does anymore. (Upgrade Limit Reached)",
+        label: "achieve artificial general Kayden intelligence"
+    },
+    {
+        upgrade: "Kayden Dyson Sphere",
+        cost: 100000000000000,
+        normalInc: 10000000000000,
+        clickInc: 500000000,
+        limit: 3,
+        flavourText: "You have harvested an entire star. Please stop. (Upgrade Limit Reached)",
+        label: "surround a star with Kayden infrastructure"
+    },
+    {
+        upgrade: "Reality Engine",
+        cost: 1000000000000000,
+        normalInc: 100000000000000,
+        clickInc: 5000000000,
+        limit: 1,
+        flavourText: "Reality has been successfully monetised.",
+        label: "turn the universe into Claude Tokens"
+    },
+    {
+        upgrade: "The Kaydenverse",
+        cost: 10000000000000000,
+        normalInc: 1000000000000000,
+        clickInc: 10000000000,
+        limit: 1,
+        flavourText: "There is no going back.",
+        label: "expand Kayden across the multiverse"
     }
 ];
 
@@ -200,7 +291,7 @@ function makeEmoji() {
 
     const fallDuration = randint(3, 6);
 
-    div.style.left = `${randint(0, window.innerWidth - 30)}px`;
+    div.style.left = `${randint(0, Math.max(1, window.innerWidth - 30))}px`;
     div.style.fontSize = `${randint(24, 48)}px`;
     div.style.animationDuration = `${fallDuration}s`;
 
@@ -212,11 +303,16 @@ function makeEmoji() {
 }
 
 
+function getUpgradeCost(upgrade) {
+    return Math.floor(upgrade.cost * inflationMultiplier);
+}
+
+
 function buildUpgradeButtons() {
     upgradesContainer.innerHTML = "";
 
     upgrades.forEach((upgrade, index) => {
-        upgradeCount[index] = 0;
+        upgradeCount[index] ??= 0;
 
         const button = document.createElement("button");
 
@@ -226,10 +322,10 @@ function buildUpgradeButtons() {
         button.innerHTML = `
             <b>${upgrade.upgrade}.</b>
             <b class="cost">
-                Costs <b class="actcost">${beautify(upgrade.cost)}</b> Claude Tokens
+                Costs <b class="actcost">${beautify(getUpgradeCost(upgrade))}</b> Claude Tokens
             </b>
             ${upgrade.label}
-            <b id="uppie${index}" class="amnt">0</b>
+            <b id="uppie${index}" class="amnt">${upgradeCount[index]}</b>
         `;
 
         button.addEventListener("click", () => {
@@ -241,19 +337,35 @@ function buildUpgradeButtons() {
 }
 
 
+function refreshUpgradeCosts() {
+    upgrades.forEach((upgrade, index) => {
+        const costEl = document.querySelector(`#upg${index} .actcost`);
+
+        if (costEl) {
+            costEl.innerText = beautify(getUpgradeCost(upgrade));
+        }
+    });
+}
+
+
 function purchaseUpgrade(index) {
     const upgrade = upgrades[index];
-    const owned = upgradeCount[index];
+    const owned = upgradeCount[index] ?? 0;
+    const actualCost = getUpgradeCost(upgrade);
 
     if (owned >= upgrade.limit) {
-        alert(upgrade.flavourText);
+        if (upgrade.flavourText) {
+            alert(upgrade.flavourText);
+        }
         return;
     }
 
-    if (kdnScore < upgrade.cost) {
+    if (kdnScore < actualCost) {
         alert("Not enough Claude Tokens!");
         return;
     }
+
+    kdnScore -= actualCost;
 
     if (upgrade.neon === true) {
         applyNeon();
@@ -284,7 +396,10 @@ function purchaseUpgrade(index) {
         emoji = true;
     }
 
-    kdnScore -= upgrade.cost;
+    if (upgrade.inflation === true) {
+        inflationMultiplier *= 1.5;
+    }
+
     passiveKdn += upgrade.normalInc;
     clickStrength += upgrade.clickInc;
     upgradeCount[index] += 1;
@@ -294,6 +409,7 @@ function purchaseUpgrade(index) {
 
     scoreEl.innerText = beautify(kdnScore);
 
+    refreshUpgradeCosts();
     saveGame();
 }
 
@@ -361,7 +477,8 @@ function saveGame() {
         clickStrength,
         passiveKdn,
         upgradeCount,
-        emoji
+        emoji,
+        inflationMultiplier
     };
 
     try {
@@ -393,10 +510,11 @@ function loadGame() {
     clickStrength = saveData.clickStrength ?? 1;
     passiveKdn = saveData.passiveKdn ?? 0;
     emoji = saveData.emoji ?? false;
+    inflationMultiplier = saveData.inflationMultiplier ?? 1;
 
     if (Array.isArray(saveData.upgradeCount)) {
         saveData.upgradeCount.forEach((count, index) => {
-            if (index < upgradeCount.length) {
+            if (index < upgrades.length) {
                 upgradeCount[index] = count;
 
                 const uiEl = document.getElementById(`uppie${index}`);
@@ -409,7 +527,7 @@ function loadGame() {
     }
 
     upgrades.forEach((upgrade, index) => {
-        if (upgradeCount[index] > 0) {
+        if ((upgradeCount[index] ?? 0) > 0) {
             if (upgrade.neon) {
                 applyNeon();
             }
@@ -439,6 +557,8 @@ function loadGame() {
     scoreEl.innerText = beautify(kdnScore);
     autoEl.innerText = beautify(passiveKdn);
     clickTrackEl.innerText = beautify(clickStrength);
+
+    refreshUpgradeCosts();
 }
 
 
