@@ -7,7 +7,7 @@ let inflationMultiplier = 1;
 let player = null;
 
 const SAVE_KEY = "kaydenClickerSaveV2";
-const RESET_VERSION = "3";
+const RESET_VERSION = "4";
 
 function getVideo() {
     return document.getElementById("bavideo");
