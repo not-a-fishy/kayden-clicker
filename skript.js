@@ -5,9 +5,12 @@ let upgradeCount = [];
 let musicStarted = false;
 let inflationMultiplier = 1;
 let player = null;
+const SAVE_KEY = "kaydenClickerSaveV2";
 
-localStorage.clear();
-location.reload();
+if (!localstorage.getItem(SAVE_KEY)) {
+    localStorage.clear();
+    location.reload();
+}
 
 function getVideo() {
     return document.getElementById("bavideo");
@@ -363,9 +366,6 @@ const mostUsedEmojis = [
     "😂", "❤️", "🤣", "👍", "😭", "🙏",
     "😘", "🥰", "😍", "😊", "🎉", "✨"
 ];
-
-const SAVE_KEY = "kaydenClickerSave";
-
 
 function randint(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
