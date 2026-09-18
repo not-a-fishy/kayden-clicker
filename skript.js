@@ -69,7 +69,7 @@ const upgrades = [
         upgrade: "1A3",
         cost: 20,
         normalInc: 1,
-        clickInc: 0,
+        clickInc: 100,
         limit: 32,
         flavourText: "You manage to get a whole class pissed off against one guy. Wow... (Upgrade Limit Reached)",
         label: "hire someone in 1A3 to harass Kayden"
@@ -94,20 +94,30 @@ const upgrades = [
         neon: true,
         label: "unlock a nice background"
     },
+
     {
         upgrade: "Claude",
         cost: 2000,
         normalInc: 0,
-        clickInc: 10,
+        clickInc: 1000,
         limit: 100,
         flavourText: "You ran out of money to buy claude tokens :( (Upgrade Limit Reached)",
         label: "buy some Claude tokens"
     },
     {
+        upgrade: "Finger Strength",
+        cost: 5000,
+        normalInc: 0,
+        clickInc: 5000,
+        limit: 25,
+        flavourText: "Your finger is getting stronger. (Upgrade Limit Reached)",
+        label: "train your clicking finger"
+    },
+    {
         upgrade: "Chess Larp",
         cost: 15000,
         normalInc: 20,
-        clickInc: 15,
+        clickInc: 15000,
         limit: 5,
         flavourText: "wow i love london system",
         label: "e4 im so good",
@@ -124,8 +134,17 @@ const upgrades = [
         emoji: true
     },
     {
+        upgrade: "Better Mouse",
+        cost: 50000,
+        normalInc: 0,
+        clickInc: 50000,
+        limit: 25,
+        flavourText: "The mouse is beginning to suffer. (Upgrade Limit Reached)",
+        label: "buy a mouse that clicks harder"
+    },
+    {
         upgrade: "Dragoon",
-        cost: 15000,
+        cost: 75000,
         normalInc: 0,
         clickInc: 0,
         limit: 1,
@@ -134,10 +153,19 @@ const upgrades = [
         dragon: true
     },
     {
-        upgrade: "Background Music",
+        upgrade: "Click Assistant",
         cost: 150000,
+        normalInc: 50000,
+        clickInc: 150000,
+        limit: 25,
+        flavourText: "It clicks. That's literally its job. (Upgrade Limit Reached)",
+        label: "hire someone to click with you"
+    },
+    {
+        upgrade: "Background Music",
+        cost: 500000,
         normalInc: 10000,
-        clickInc: 1000,
+        clickInc: 500000,
         limit: 1,
         flavourText: "u alr got this",
         label: "bg music :) (btw its bad apple music)",
@@ -145,113 +173,167 @@ const upgrades = [
     },
     {
         upgrade: "Video",
-        cost: 500000,
+        cost: 1500000,
         normalInc: 1000,
-        clickInc: 10000,
+        clickInc: 2000000,
         limit: 1,
         flavourText: "u alr got this",
         label: "bad apple video",
         playvideo: true
     },
     {
+        upgrade: "Gaming Mouse",
+        cost: 5000000,
+        normalInc: 0,
+        clickInc: 10000000,
+        limit: 20,
+        flavourText: "RGB adds performance. Trust me. (Upgrade Limit Reached)",
+        label: "buy an unnecessarily expensive mouse"
+    },
+    {
         upgrade: "Kayden Plant Farm",
         cost: 10000000,
         normalInc: 10000000,
-        clickInc: 0,
+        clickInc: 5000000,
         limit: 100,
         flavourText: "I think you own too much land now RICH KID",
         label: "kayden likes some plants, give these plants to him and he will give you claude tokens."
     },
     {
-        upgrade: "Kayden Mining Corporation",
+        upgrade: "Click Factory",
         cost: 50000000,
-        normalInc: 50000000,
-        clickInc: 0,
+        normalInc: 25000000,
+        clickInc: 50000000,
+        limit: 50,
+        flavourText: "The factory has achieved industrial clicking. (Upgrade Limit Reached)",
+        label: "mass produce clicks"
+    },
+    {
+        upgrade: "Kayden Mining Corporation",
+        cost: 250000000,
+        normalInc: 250000000,
+        clickInc: 100000000,
         limit: 50,
         flavourText: "The entire economy is now dependent on Kayden. (Upgrade Limit Reached)",
         label: "mine Claude Tokens from the ground"
     },
     {
+        upgrade: "Click Empire",
+        cost: 1000000000,
+        normalInc: 0,
+        clickInc: 1000000000,
+        limit: 25,
+        flavourText: "You now own the entire click industry. (Upgrade Limit Reached)",
+        label: "take over every click factory"
+    },
+    {
         upgrade: "Kayden Bank",
-        cost: 250000000,
-        normalInc: 100000000,
-        clickInc: 25000,
+        cost: 5000000000,
+        normalInc: 2000000000,
+        clickInc: 1000000000,
         limit: 25,
         flavourText: "The bank has collapsed. Somehow you still got the tokens. (Upgrade Limit Reached)",
         label: "open a completely legitimate bank"
     },
     {
         upgrade: "Quantum Kayden",
-        cost: 1000000000,
-        normalInc: 500000000,
-        clickInc: 100000,
+        cost: 25000000000,
+        normalInc: 10000000000,
+        clickInc: 25000000000,
         limit: 10,
         flavourText: "There are now multiple Kaydens. This is probably bad. (Upgrade Limit Reached)",
         label: "split Kayden into several dimensions"
     },
     {
-        upgrade: "Time Machine",
-        cost: 10000000000,
-        normalInc: 2000000000,
-        clickInc: 1000000,
-        limit: 5,
-        flavourText: "You went back in time and bought this earlier. Somehow. (Upgrade Limit Reached)",
-        label: "go back 10 seconds and buy yourself a Time Machine"
+        upgrade: "Super Click",
+        cost: 100000000000,
+        normalInc: 0,
+        clickInc: 100000000000,
+        limit: 20,
+        flavourText: "Every click now violates several laws of physics. (Upgrade Limit Reached)",
+        label: "make your clicks absurdly powerful"
     },
     {
         upgrade: "Inflation",
-        cost: 100000000000,
-        normalInc: 10000000000,
-        clickInc: 5000000,
+        cost: 500000000000,
+        normalInc: 50000000000,
+        clickInc: 100000000000,
         limit: 1,
         flavourText: "Everything costs 50% more now.",
         label: "destroy the value of Claude Tokens",
         inflation: true
     },
     {
+        upgrade: "Time Machine",
+        cost: 2500000000000,
+        normalInc: 500000000000,
+        clickInc: 1000000000000,
+        limit: 5,
+        flavourText: "You went back in time and bought this earlier. Somehow. (Upgrade Limit Reached)",
+        label: "go back 10 seconds and buy yourself a Time Machine"
+    },
+    {
+        upgrade: "Click Reactor",
+        cost: 10000000000000,
+        normalInc: 0,
+        clickInc: 10000000000000,
+        limit: 10,
+        flavourText: "The reactor is producing dangerous amounts of clicking. (Upgrade Limit Reached)",
+        label: "power your clicks with nuclear energy"
+    },
+    {
         upgrade: "Kayden AI",
-        cost: 1000000000000,
-        normalInc: 100000000000,
-        clickInc: 25000000,
+        cost: 50000000000000,
+        normalInc: 5000000000000,
+        clickInc: 25000000000000,
         limit: 10,
         flavourText: "It has been trained exclusively on Kayden lore. (Upgrade Limit Reached)",
         label: "deploy an unnecessarily large model"
     },
     {
         upgrade: "AGI Kayden",
-        cost: 10000000000000,
-        normalInc: 1000000000000,
-        clickInc: 100000000,
+        cost: 500000000000000,
+        normalInc: 50000000000000,
+        clickInc: 500000000000000,
         limit: 5,
         flavourText: "Nobody knows what it does anymore. (Upgrade Limit Reached)",
         label: "achieve artificial general Kayden intelligence"
     },
     {
+        upgrade: "Click Singularity",
+        cost: 5000000000000000,
+        normalInc: 0,
+        clickInc: 5000000000000000,
+        limit: 3,
+        flavourText: "The click has become a fundamental force of nature. (Upgrade Limit Reached)",
+        label: "compress the universe into one click"
+    },
+    {
         upgrade: "Kayden Dyson Sphere",
-        cost: 100000000000000,
-        normalInc: 10000000000000,
-        clickInc: 500000000,
+        cost: 25000000000000000,
+        normalInc: 1000000000000000,
+        clickInc: 10000000000000000,
         limit: 3,
         flavourText: "You have harvested an entire star. Please stop. (Upgrade Limit Reached)",
         label: "surround a star with Kayden infrastructure"
     },
     {
         upgrade: "Reality Engine",
-        cost: 1000000000000000,
-        normalInc: 100000000000000,
-        clickInc: 5000000000,
+        cost: 100000000000000000,
+        normalInc: 10000000000000000,
+        clickInc: 100000000000000000,
         limit: 1,
         flavourText: "Reality has been successfully monetised.",
         label: "turn the universe into Claude Tokens"
     },
     {
-        upgrade: "The Kaydenverse",
-        cost: 10000000000000000,
-        normalInc: 1000000000000000,
-        clickInc: 10000000000,
+        upgrade: "THE BUTTON",
+        cost: 1000000000000000000,
+        normalInc: 0,
+        clickInc: 1000000000000000000,
         limit: 1,
-        flavourText: "There is no going back.",
-        label: "expand Kayden across the multiverse"
+        flavourText: "There is no upgrade beyond this.",
+        label: "click the most powerful button in existence"
     }
 ];
 
