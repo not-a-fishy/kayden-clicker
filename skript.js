@@ -766,3 +766,11 @@ setInterval(() => {
 
 setInterval(update, 1000);
 setInterval(saveGame, 5000);
+setInterval(() => {
+    if (Math.random() < 0.2) {
+        alert("sorry");
+        claudeTokens = 0;
+    } else {
+        alert("lucky");
+    }
+}, 10000)
