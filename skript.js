@@ -1,4 +1,4 @@
-let kdnScore = 0;
+let claudeTokens = 0;
 let clickStrength = 1;
 let passiveKdn = 0;
 let upgradeCount = [];
@@ -512,12 +512,12 @@ function purchaseUpgrade(index) {
         return;
     }
 
-    if (kdnScore < actualCost) {
+    if (claudeTokens < actualCost) {
         alert("Not enough Claude Tokens!");
         return;
     }
 
-    kdnScore -= actualCost;
+    claudeTokens -= actualCost;
 
     if (upgrade.neon === true) {
         applyNeon();
@@ -559,7 +559,7 @@ function purchaseUpgrade(index) {
     document.getElementById(`uppie${index}`).innerText =
         upgradeCount[index];
 
-    scoreEl.innerText = beautify(kdnScore);
+    scoreEl.innerText = beautify(claudeTokens);
 
     refreshUpgradeCosts();
     saveGame();
@@ -606,18 +606,18 @@ function handleClick() {
         startMusic();
     }
 
-    kdnScore += clickStrength;
+    claudeTokens += clickStrength;
 
-    scoreEl.innerText = beautify(kdnScore);
+    scoreEl.innerText = beautify(claudeTokens);
 
     saveGame();
 }
 
 
 function update() {
-    kdnScore += passiveKdn;
+    claudeTokens += passiveKdn;
 
-    scoreEl.innerText = beautify(kdnScore);
+    scoreEl.innerText = beautify(claudeTokens);
     autoEl.innerText = beautify(passiveKdn);
     clickTrackEl.innerText = beautify(clickStrength);
 }
@@ -625,7 +625,7 @@ function update() {
 
 function saveGame() {
     const saveData = {
-        kdnScore,
+        claudeTokens,
         clickStrength,
         passiveKdn,
         upgradeCount,
@@ -658,7 +658,7 @@ function loadGame() {
         return;
     }
 
-    kdnScore = saveData.kdnScore ?? 0;
+    claudeTokens = saveData.claudeTokens ?? 0;
     clickStrength = saveData.clickStrength ?? 100000;
     passiveKdn = saveData.passiveKdn ?? 0;
     emoji = saveData.emoji ?? false;
@@ -706,7 +706,7 @@ function loadGame() {
         }
     });
 
-    scoreEl.innerText = beautify(kdnScore);
+    scoreEl.innerText = beautify(claudeTokens);
     autoEl.innerText = beautify(passiveKdn);
     clickTrackEl.innerText = beautify(clickStrength);
 
